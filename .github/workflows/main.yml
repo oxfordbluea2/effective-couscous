@@ -31,7 +31,7 @@ jobs:
 
       - name: Create RDP User with Fixed Password
         run: |
-          $password = "RDP"
+          $password = "Ohassaneg101!"
           $securePass = ConvertTo-SecureString $password -AsPlainText -Force
           
           # Create the user
@@ -93,7 +93,7 @@ jobs:
           Write-Host "`n=== RDP ACCESS ==="
           Write-Host "Address: $env:TAILSCALE_IP"
           Write-Host "Username: RDP"
-          Write-Host "Password: RDP"
+          Write-Host "Password: Ohassaneg101!"
           Write-Host "==================`n"
           
           while ($true) {
