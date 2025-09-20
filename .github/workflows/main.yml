@@ -12,13 +12,19 @@ jobs:
       - name: Update & Install XRDP + Desktop
         run: |
           sudo apt-get update
-          # Install lightweight desktop + XRDP
-          sudo apt-get install -y xfce4 xfce4-goodies xrdp
-          sudo systemctl enable xrdp
-          sudo systemctl start xrdp
-          
-          # Set default session to XFCE
+          # Install XFCE desktop, XRDP, and required components
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y xfce4 xfce4-goodies xorg dbus-x11 x11-xserver-utils xrdp
+
+          # Configure XRDP to use XFCE
+          echo "xfce4-session" | sudo tee /etc/skel/.xsession
           echo "xfce4-session" > ~/.xsession
+
+          # Force XRDP to start XFCE instead of default/failsafe
+          sudo sed -i.bak '/^test -x.*startwm.sh/ s/^/#/' /etc/xrdp/startwm.sh
+          echo "startxfce4" | sudo tee -a /etc/xrdp/startwm.sh
+
+          # Restart XRDP service
+          sudo systemctl restart xrdp
 
       - name: Create RDP User
         run: |
